@@ -106,12 +106,18 @@
                           <button type="submit" class="btn btn-outline-warning">
                             Zip+
                           </button> 
+                          <button type="button" class="btn btn-outline-warning ml-2" data-toggle="modal" data-target="#commentModal">
+                            +Comment
+                          </button> 
                         </form:form>
                     </c:when>
                     <c:otherwise>
-                       <a href="/unzip/${buzz.id}" class="btn btn-outline-warning">
+                      <a href="/unzip/${buzz.id}" class="btn btn-outline-warning">
                         Unzip-
                       </a> 
+                      <button type="button" class="btn btn-outline-warning ml-2" data-toggle="modal" data-target="#commentModal">
+                        +Comment
+                      </button> 
                     </c:otherwise>
                   </c:choose>
                 </c:when>
@@ -131,7 +137,7 @@
 </div>
 
 
-<!-- Modal -->
+<!-- Buzz Modal -->
 <div class="modal fade" id="buzzModal" tabindex="-1" role="dialog" aria-labelledby="buzzModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content bg-dark">
@@ -155,6 +161,11 @@
     </div>
   </div>
 </div>
+
+<!-- comment Modal -->
+
+
+
 
 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">

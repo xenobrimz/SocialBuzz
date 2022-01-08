@@ -30,24 +30,15 @@ public class CommentController {
         this.buzzService = buzzService;
     }
 
-    @GetMapping("buzz/comments/{id}")
+    @GetMapping("buzz/{id}/comments/")
     public String Comment(Model model, @PathVariable("id") Long id) {
         Comment Comment = commentService.findCommentById(id);
         model.addAttribute("Comment", Comment);
-        return "Comment.jsp";
-    }
+        return "Comments.jsp";
+    }  
 
-    @GetMapping("buzz/comments/{id}/edit")
-    public String edit(Model model, @PathVariable("id") Long id) {
-        Comment Comment = commentService.findCommentById(id);
-        System.out.println(Comment.getId());
-        model.addAttribute("Comment", Comment);
-        return "CommentEdit.jsp";
-    }
-    
-
-    @PostMapping("buzz/comment/post")
-    public String postComment(@Valid @ModelAttribute("Comments") Comment comment, BindingResult result, HttpSession session) {
+    @PostMapping("buzz/{id}/comments/post")
+    public String postComment(@Valid @ModelAttribute("Comments") Comment comment, @PathVariable("id") Long id, BindingResult result, HttpSession session) {
         String currentPage = (String)session.getAttribute("currentPage");
         
         if(result.hasErrors()){
@@ -55,27 +46,26 @@ public class CommentController {
         }
 
         Long userId = (Long) session.getAttribute("userId");
+        
         User u = userService.findUserById(userId);
+        Buzz b = userService.findBuzzById(id);
 
         comment.setUser(u);
+        comment.setBuzz(b);
+
         commentService.createComment(comment);
         return"redirect:/feed";
     }
 
-    @PostMapping("buzz/comments/{id}/update")
-    public String EditUser(@PathVariable("id") Long id, @Valid @ModelAttribute("Comment") Comment comm, BindingResult result, HttpSession session) {
-        if(result.hasErrors()){
-            return"CommentEdit.jsp";
-        }
-
-        Long userId = (Long) session.getAttribute("userId");
-        User u = userService.findUserById(userId);
-        comm.setUser(u);
-        commentService.updateComment(comm);
-        return"redirect:/home";
+    @GetMapping("buzz/{id}/comments/edit")
+    public String edit(Model model, @PathVariable("id") Long id) {
+        Comment Comment = commentService.findCommentById(id);
+        System.out.println(Comment.getId());
+        model.addAttribute("Comment", Comment);
+        return "CommentEdit.jsp";
     }
 
-    @GetMapping("buzz/comments/{id}/delete")
+    @GetMapping("buzz/{id}/comments/delete")
     public String deleteNinja(@PathVariable("id") Long id, HttpSession session){
         String currentPage = (String) session.getAttribute("currentPage");
         this.commentService.deleteComment(id);
